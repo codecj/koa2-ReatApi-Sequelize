@@ -1,9 +1,10 @@
-const products = require('../controllers/product');
+const products = require('../dao/product');
 // const user = require('../models/user');
 const APIError = require('../rest').APIError;
 
 module.exports = {
     'GET /api/products/allProd': async (ctx, next) => {//获取所有商品接口
+        console.log(ctx)
         ctx.rest(await products.getProducts(ctx.query.name,ctx.query.price));
     },
     'GET /api/products/:id': async (ctx, next) => {//具体id的产品接口

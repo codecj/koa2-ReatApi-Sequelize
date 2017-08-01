@@ -3,15 +3,18 @@ const model = require('../model');
 
 let Products = model.products;
     // User = model.user;
+// (async () => {
+//     var prod = await Products.create({
+//         name: 'John',
+//         price:12
+//     });
+   
+// })();
 
 var products = [];
 
 var id = 0;
-// function nextId() {
-//     // id++;
-//     // return 'p' + id;//自己定义id
-//     return uuid.v4();//唯一id
-// }
+
 // function User(name,password){
 //     // this.id = nextId();
 //     this.name = name;
@@ -19,7 +22,6 @@ var id = 0;
 // }
 
 function Product(name, price) {//创建产品
-    // this.id = nextId();
     this.name = name;
     this.price = price;
 }
