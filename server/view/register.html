@@ -1,0 +1,12 @@
+{% extends "base.html" %} {% block main %}
+<div>
+    <p>{{title}}，请先注册</p>
+     <form action="/api/login" method="post">
+        <input type="text" placeholder="用户名" id="username" name="email">
+        <input type="password" placeholder="密码" id="password" name="password">
+        <!-- <a href="" v-on:click="login">请先登录</a> -->
+        <button>注册</button>
+    </form>
+</div>
+
+{% endblock %}
