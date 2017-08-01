@@ -1,5 +1,5 @@
-const products = require('../models/products');
-const user = require('../models/user');
+const products = require('../controllers/product');
+// const user = require('../models/user');
 const APIError = require('../rest').APIError;
 
 module.exports = {
@@ -28,24 +28,25 @@ module.exports = {
         } else {
             throw new APIError('product:not_found', 'product not found by id.');
         }
-    },
-    'POST /api/register': async (ctx, next) => {//注册接口
-        // console.log(ctx.request.body)
+    }
+    // ,
+    // 'POST /api/register': async (ctx, next) => {//注册接口
+    //     // console.log(ctx.request.body)
 
-        var p = products.register(ctx.request.body.username, parseFloat(ctx.request.body.password));
-        ctx.rest(p);
-    },
-    'POST /api/login': async (ctx, next) => {//登录接口
-        // console.log(ctx.request.body)
-        // ctx.render('register.html', {
-        //     title: '登录失败'
-        // });
-        var p = products.login(ctx.request.body.username, parseFloat(ctx.request.body.password));
-        ctx.rest(await p);
-        // ctx.render('register.html', {
-        //     title: '登录失败'
-        // });
-    },
+    //     var p = products.register(ctx.request.body.username, parseFloat(ctx.request.body.password));
+    //     ctx.rest(p);
+    // },
+    // 'POST /api/login': async (ctx, next) => {//登录接口
+    //     // console.log(ctx.request.body)
+    //     // ctx.render('register.html', {
+    //     //     title: '登录失败'
+    //     // });
+    //     var p = products.login(ctx.request.body.username, parseFloat(ctx.request.body.password));
+    //     ctx.rest(await p);
+    //     // ctx.render('register.html', {
+    //     //     title: '登录失败'
+    //     // });
+    // },
 
 };
 
