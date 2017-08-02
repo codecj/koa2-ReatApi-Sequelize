@@ -10,8 +10,8 @@ module.exports = {
         var p = user.login(ctx.request.body.username, parseFloat(ctx.request.body.password));
         ctx.rest(await p);
         
-        ctx.render('register.html', {
-            title: '登录失败'
-        });
+        // ctx.render('register.html', {
+        //     title: '登录失败'
+        // });
     }
 }
