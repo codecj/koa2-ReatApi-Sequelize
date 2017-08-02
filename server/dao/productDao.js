@@ -1,7 +1,8 @@
 
 const model = require('../model');
 let Products = model.products;
-var products = [];
+// var products = [];
+
 function Product(name, price) {//创建产品
     this.name = name;
     this.price = price;
@@ -78,57 +79,35 @@ module.exports = {
     createProduct: (name,price) => {//创建新产品
         // console.log(name)
         var p = new Product(name, price);
-        products.push(p);
-        (async () => {
+        // products.push(p);
+        return (async () => {
             await Products.create(p);
+            var pets = await Products.findAll({where:{name:name}});
+            return pets;
         })();
-        return p;
+
+
+        // (async () => {
+        //     await Products.create(p);
+        // })();
+        // return p;
     },
     editProduct: (id,name,price) => {//根据id编辑产品
-        (async () => {
+        return (async () => {
             var pets = await Products.findById(id);
-            // pets.name = name;//更改数据
-            // pets.price = price;
-            // await pets.save();//执行save()操作sql
             await pets.update({//直接操作sql
                 name :name,
                 price :price
 
             })
+            return pets;
         })();
-        var
-            index = -1,
-            i;
-        for (i = 0; i < products.length; i++) {
-            if (products[i].id === id) {
-                index = i;
-                products[index].name = name;
-                products[index].price = price;
-                break;
-            }
-        }
-        if (index >= 0) {
-            return products[index];
-        }
     },
     deleteProduct: (id) => {//根据id删除产品
-        (async () => {
+        return (async () => {
             var pets = await Products.findById(id);
             await pets.destroy();
-
+            return pets;
         })();
-        var
-            index = -1,
-            i;
-        for (i = 0; i < products.length; i++) {
-            if (products[i].id === id) {
-                index = i;
-                break;
-            }
-        }
-        if (index >= 0) {
-            return products.splice(index, 1)[0];
-        }
-        return null;
     }
 };

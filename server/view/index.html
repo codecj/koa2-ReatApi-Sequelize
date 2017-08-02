@@ -1,4 +1,18 @@
-{% extends "base.html" %} {% block main %}
+<!DOCTYPE html>
+<html>
+<script src="./static/js/jquery.min.js"></script>
+<script src="./static/js/vue.min.js"></script>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>服务端</title>
+</head>
+
+<body>
+    <div style="height:50px;border-bottom:1px solid #ccc">
+        头部
+        <input type="text" value="导出Excel" style="border:1px solid #ccc">
+    </div>
 <script>
 $(function(){
      new Vue({
@@ -23,27 +37,18 @@ $(function(){
                     type: 'get',
                     dataType: 'json',
                     contentType: 'application/json',
-                    // url: '/api/products/allProd'
-                    url: '/api/products/allProd?name='+this.pagram.name+'&price='+this.pagram.price
+                    url: 'http://127.0.0.1:3000/api/products/allProd?name='+this.pagram.name+'&price='+this.pagram.price
 
                     // data:JSON.stringify(pagram)
                 }).done(function (data) {
                     console.log(data)
-                    that.products = data;
+                    that.products = data.data;
 
                 }).fail(function (jqXHR, textStatus) {
                     alert('Error: ' + jqXHR.status);
                 });
             },
-            //   getProducts(){//获取
-            //     let that = this;
-            //     $.ajax('/api/products').done(function (data) {
-            //         console.log(data)
-            //         that.products = data;
-            //     }).fail(function (jqXHR, textStatus) {
-            //         alert('Error: ' + jqXHR.status);
-            //     });
-            // },
+
             addProduct:function(e){//添加
                 var submit = document.getElementById("submit");
                 var name = document.getElementById("name");
@@ -58,11 +63,11 @@ $(function(){
                     type: 'post',
                     dataType: 'json',
                     contentType: 'application/json',
-                    url: '/api/addproducts',
+                    url: 'http://127.0.0.1:3000/api/addproducts',
                     data: JSON.stringify(product)
                 }).done(function (r) {
-                    console.log(r)
-                    that.products.push(r);
+                    that.products.push(r.data);
+                    that.getProducts();
                 }).fail(function (jqXHR, textStatus) {
                     // alert('Error: ' + jqXHR.status);
                 });
@@ -73,18 +78,10 @@ $(function(){
                 $.ajax({
                     type: 'delete',
                     dataType: 'json',
-                    url: '/api/products/' + id
+                    url: 'http://127.0.0.1:3000/api/products/' + id
                 }).done(function (r) {
                     console.log(r)
-                    // console.log(that.products)
-                    var i;
-                    for (i=0; i<that.products.length; i++) {
-                        if (that.products[i].id === r.id) {
-                            that.products.splice(i, 1);
-                            return;
-                        }
-                    }
-                    // console.log(that.products)
+                    that.getProducts();
 
                 }).fail(function (jqXHR, textStatus) {
                     // alert('Error: ' + jqXHR.status);
@@ -108,18 +105,11 @@ $(function(){
                     type: 'put',
                     dataType: 'json',
                     contentType: 'application/json',
-                    url: '/api/products/'+ id,
+                    url: 'http://127.0.0.1:3000/api/products/'+ id,
                     data: JSON.stringify(product)
                 }).done(function (r) {
                     console.log(r)
-                    var i;
-                    for (i=0; i<that.products.length; i++) {
-                        if (that.products[i].id === r.id) {
-                            that.products[i].name = r.name;
-                            that.products[i].price = r.price;
-                            return;
-                        }
-                    }
+                    that.getProducts();
                 }).fail(function (jqXHR, textStatus) {
                     // alert('Error: ' + jqXHR.status);
                 });
@@ -148,7 +138,7 @@ $(function(){
                     type: 'post',
                     dataType: 'json',
                     contentType: 'application/json',
-                    url: '/api/login',
+                    url: 'http://127.0.0.1:3000/api/login',
                     data: JSON.stringify(namepw)
                 }).done(function (r) {
                    console.log(r)
@@ -174,7 +164,7 @@ $(function(){
                     type: 'post',
                     dataType: 'json',
                     contentType: 'application/json',
-                    url: '/api/register',
+                    url: 'http://127.0.0.1:3000/api/register',
                     data: JSON.stringify(namepw)
                 }).done(function (r) {
                    console.log(r)
@@ -212,16 +202,16 @@ $(function(){
 <div>
     <div id="left" >
     <div>
-    <form action="/api/login" method="post">
+  <!--   <form action="/api/login" method="post">
         <input type="text" placeholder="用户名" id="username" name="username">
         <input type="password" placeholder="密码" id="password" name="password">
         <button>请先登录</button>
-    </form>
+    </form> -->
      <!-- <form> -->
-       <!--  <input type="text" placeholder="用户名" id="username">
+        <input type="text" placeholder="用户名" id="username">
         <input type="password" placeholder="密码" id="password">
         <span v-on:click="login">请先登录</span>
-        <span v-on:click="register">注册</span> -->
+        <span v-on:click="register">注册</span>
 
     <!-- </form> -->
     </div>
@@ -235,9 +225,9 @@ $(function(){
                 </tr>
             </thead>
             <tbody> 
-                <tr v-for="p in products">
-                    <td v-html="p.name"></td>
-                    <td v-html="p.price"></td>
+                <tr v-for="p in products" :id="p.id">
+                    <td>{{p.name}}</td>
+                    <td>{{p.price}}</td>
                     <td v-on:click="changeEdit(p.id)">edit</td>
                     <td v-on:click="deleteProduct(p.id)">delect</td>
                 </tr>
@@ -263,4 +253,9 @@ $(function(){
         </div>
     </div>
 </div>
-{% endblock %}
+    <div style="line-height:50px;border-top:1px solid #ccc">
+        尾部
+    </div>
+</body>
+
+</html>

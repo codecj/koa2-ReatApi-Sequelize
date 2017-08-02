@@ -1,25 +1,19 @@
 const Koa = require("koa");
-const koacors = require("koa2-cors");
-const bodyParser = require("koa-bodyparser");
+const koacors = require("koa2-cors");//允许跨域
+const bodyParser = require("koa-bodyparser");//用来解析body的中间件
 const controller = require("./controller");
-const templating = require("./templating");
 const rest = require("./rest");
 const app = new Koa();
-
-
+const status = require('./status');
+//添加格式化处理响应结果的中间件，在添加路由之前调用
+app.use(status);
 app.use(koacors());
-app.use(async (ctx, next) => {
-    // console.log(`Process ${ctx.request.method} ${ctx.request.url}...`);
-    await next();
-});
-let staticFiles = require('./static-files');
-app.use(staticFiles('/static/', __dirname + '/static'));
+// app.use(async (ctx, next) => {
+//     await next();
+// });
 
 app.use(bodyParser());
-app.use(templating('view', {
-    noCache: true,
-    watch: true
-}));
+
 // bind .rest() for ctx:
 app.use(rest.restify());
 
