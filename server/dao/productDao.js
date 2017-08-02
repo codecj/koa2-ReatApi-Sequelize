@@ -1,32 +1,12 @@
 
 const model = require('../model');
-
 let Products = model.products;
-    // User = model.user;
-// (async () => {
-//     var prod = await Products.create({
-//         name: 'John',
-//         price:12
-//     });
-   
-// })();
-
 var products = [];
-
-var id = 0;
-
-// function User(name,password){
-//     // this.id = nextId();
-//     this.name = name;
-//     this.password = password;
-// }
-
 function Product(name, price) {//创建产品
     this.name = name;
     this.price = price;
 }
 module.exports = {
-
     getProducts: (name,price) => {//获取产品和搜索功能
         // console.log("name-------"+name)
         // console.log("price-------"+price)
@@ -77,7 +57,6 @@ module.exports = {
                                 price: { $like: '%'+price+'%'}
                             }
                         ]
-                        
                     }
                 })
                 return pets;
@@ -103,7 +82,6 @@ module.exports = {
         (async () => {
             await Products.create(p);
         })();
-        console.log(p)
         return p;
     },
     editProduct: (id,name,price) => {//根据id编辑产品
@@ -130,7 +108,6 @@ module.exports = {
             }
         }
         if (index >= 0) {
-            // console.log(products[index])
             return products[index];
         }
     },
@@ -140,7 +117,6 @@ module.exports = {
             await pets.destroy();
 
         })();
-        // console.log(JSON.stringify(products))
         var
             index = -1,
             i;
@@ -152,34 +128,7 @@ module.exports = {
         }
         if (index >= 0) {
             return products.splice(index, 1)[0];
-            // return products[index];
         }
         return null;
     }
-    // ,login: (username,password) => {//用户登录
-    //     return (async () => {
-    //         var user = await Users.findAll({
-    //             where:{name:username,password:password}
-    //         });
-    //         if(user.length == 0){
-    //             console.log("fail")
-    //             //跳到注册页面
-    //         }else{
-    //             console.log("success")
-    //             //跳到登录页面
-    //         }
-    //         // ctx.render('register.html', {
-    //         //     title: '登录失败'
-    //         // });
-    //         return user;
-    //     })();
-       
-    // },
-    // register:(name,password)=>{
-    //     var usr = new User(name, password);
-    //     (async () => {
-    //         await Users.create(usr);
-    //     })();
-    //     return usr;
-    // }
 };

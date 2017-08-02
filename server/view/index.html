@@ -178,11 +178,7 @@ $(function(){
                     data: JSON.stringify(namepw)
                 }).done(function (r) {
                    console.log(r)
-                   // if(r.length == 0){
-                   //      console.log("没有该用户名")
-                   // }else{
-                   //      console.log("登录成功")
-                   // }
+                  
                 }).fail(function (jqXHR, textStatus) {
                     // alert('Error: ' + jqXHR.status);
                 });
@@ -216,16 +212,16 @@ $(function(){
 <div>
     <div id="left" >
     <div>
-  <!--   <form action="/api/login" method="post">
+    <form action="/api/login" method="post">
         <input type="text" placeholder="用户名" id="username" name="username">
         <input type="password" placeholder="密码" id="password" name="password">
         <button>请先登录</button>
-    </form> -->
+    </form>
      <!-- <form> -->
-        <input type="text" placeholder="用户名" id="username">
+       <!--  <input type="text" placeholder="用户名" id="username">
         <input type="password" placeholder="密码" id="password">
         <span v-on:click="login">请先登录</span>
-        <span v-on:click="register">注册</span>
+        <span v-on:click="register">注册</span> -->
 
     <!-- </form> -->
     </div>
