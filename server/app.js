@@ -7,10 +7,10 @@ const app = new Koa();
 const status = require('./status');
 //添加格式化处理响应结果的中间件，在添加路由之前调用
 app.use(status);
-app.use(koacors());
 // app.use(async (ctx, next) => {
 //     await next();
 // });
+app.use(koacors());
 
 app.use(bodyParser());
 

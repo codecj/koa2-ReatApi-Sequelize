@@ -59,6 +59,7 @@ $(function(){
                         price: price.value
                     }
                 var that = this;
+                that.products = [];
                 $.ajax({
                     type: 'post',
                     dataType: 'json',
@@ -66,8 +67,12 @@ $(function(){
                     url: 'http://127.0.0.1:3000/api/addproducts',
                     data: JSON.stringify(product)
                 }).done(function (r) {
-                    that.products.push(r.data);
+                    console.log(r)
+                    r.data.forEach(item=>{
+                        that.products.push(item);
+                    })
                     that.getProducts();
+                    
                 }).fail(function (jqXHR, textStatus) {
                     // alert('Error: ' + jqXHR.status);
                 });
@@ -78,7 +83,7 @@ $(function(){
                 $.ajax({
                     type: 'delete',
                     dataType: 'json',
-                    url: 'http://127.0.0.1:3000/api/products/' + id
+                    url: 'http://127.0.0.1:3000/api/products?id=' + id
                 }).done(function (r) {
                     console.log(r)
                     that.getProducts();
@@ -105,7 +110,7 @@ $(function(){
                     type: 'put',
                     dataType: 'json',
                     contentType: 'application/json',
-                    url: 'http://127.0.0.1:3000/api/products/'+ id,
+                    url: 'http://127.0.0.1:3000/api/products?id='+ id,
                     data: JSON.stringify(product)
                 }).done(function (r) {
                     console.log(r)
@@ -160,6 +165,7 @@ $(function(){
                     username:userName,
                     password:password
                 }
+                let that = this;
                 $.ajax({
                     type: 'post',
                     dataType: 'json',
@@ -168,7 +174,7 @@ $(function(){
                     data: JSON.stringify(namepw)
                 }).done(function (r) {
                    console.log(r)
-                  
+                  // that.getProducts();
                 }).fail(function (jqXHR, textStatus) {
                     // alert('Error: ' + jqXHR.status);
                 });

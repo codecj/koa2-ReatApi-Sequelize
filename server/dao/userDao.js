@@ -1,6 +1,7 @@
 
 const model = require('../model');
-
+const reason = require('../common/codeReason');
+// const isSuccess = require('../sORf/ifSuccess');
 let Users = model.user;
 
 function User(name,password){
@@ -10,30 +11,33 @@ function User(name,password){
 
 module.exports = {
     login: (username,password) => {//用户登录
-        return (async () => {
-            var user = await Users.findAll({
-                where:{name:username,password:password}
-            });
-            if(user.length == 0){
-                console.log("fail")
-                // ctx.render('register.html', {
-                //     title: '登录失败'
-                // });
-                //跳到注册页面
-            }else{
-                console.log("success")
-                //跳到登录页面
-            }
-           
-            return user;
-        })();
-       
+        // console.log(JSON.stringify(ctx.body))
+        // console.log(res.genHttpResp(4,username))
+        if(username && password){
+              // let code = reason.DB_EXCEPTION_ERR_CODE;
+                // isSuccess.processFail(code);
+                 return (async () => {
+                    let code = reason.SUCCESS;
+                    // reason.getReason = ;
+                    var user = await Users.findAll({
+                        where:{name:username,password:password}
+                    });
+             
+                    return {user,code};
+                    
+                })();
+        }else{
+            return "";
+        }
     },
     register:(name,password)=>{
         var usr = new User(name, password);
-        (async () => {
+        return (async () => {
             await Users.create(usr);
+            let user = await Users.findAll({
+                where:{name:name,password:password}
+            });
+            return user;
         })();
-        return usr;
     }
 };

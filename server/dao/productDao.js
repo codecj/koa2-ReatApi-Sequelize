@@ -1,29 +1,26 @@
-
 const model = require('../model');
-let Products = model.products;
-// var products = [];
+const reason = require('../common/codeReason');
 
+let Products = model.products;
 function Product(name, price) {//创建产品
     this.name = name;
     this.price = price;
 }
 module.exports = {
     getProducts: (name,price) => {//获取产品和搜索功能
-        // console.log("name-------"+name)
-        // console.log("price-------"+price)
+        let code;
         if(!name && !price){
            return (async () => {
-                products = [];
+                // products = [];
                 var pets = await Products.findAll({
                     'order': [
                         ['id', 'DESC']//降序
                         // ['id', 'ASC']//默认升序
                     ] 
-                                });
-                for (let p of pets) {
-                    products.push(p);
-                };
-                 return products;
+                    });
+            
+                code = reason.SUCCESS;
+                return {pets,code};
             })();
         }else{
             if(name && !price){
@@ -44,7 +41,8 @@ module.exports = {
                         
                     }
                 })
-                return pets;
+                code = reason.SUCCESS;
+                return {pets,code};
                 })();
             }else if(name && price){
                 return (async () => {
@@ -60,37 +58,34 @@ module.exports = {
                         ]
                     }
                 })
-                return pets;
+                code = reason.SUCCESS;
+                return {pets,code};
                 })();
             }
         }
     },
 
     getProduct: (id) => {//获取带id的产品
-        var i;
-        for (i = 0; i < products.length; i++) {
-            if (products[i].id === id) {
-                return products[i];
-            }
-        }
-        return null;
+        return (async () => {
+            var pets = await Products.findAll({where:{id:id}});
+            return pets;
+        })();
     },
 
     createProduct: (name,price) => {//创建新产品
-        // console.log(name)
+        let code;
         var p = new Product(name, price);
-        // products.push(p);
         return (async () => {
             await Products.create(p);
             var pets = await Products.findAll({where:{name:name}});
-            return pets;
+            if(pets){
+                code = reason.SUCCESS;
+             }else{
+                code = DB_EXCEPTION_ERR_CODE;
+             }
+           
+            return {pets,code};
         })();
-
-
-        // (async () => {
-        //     await Products.create(p);
-        // })();
-        // return p;
     },
     editProduct: (id,name,price) => {//根据id编辑产品
         return (async () => {
@@ -104,10 +99,17 @@ module.exports = {
         })();
     },
     deleteProduct: (id) => {//根据id删除产品
+        let code;
         return (async () => {
             var pets = await Products.findById(id);
-            await pets.destroy();
-            return pets;
+            if(pets){
+                await pets.destroy();
+                code = reason.SUCCESS;
+            }else{
+                code = reason.RECORD_NOT_EXISTS_ERR_CODE
+            }
+         
+            return {pets,code};
         })();
     }
 };
