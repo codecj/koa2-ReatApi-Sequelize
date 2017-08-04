@@ -1,7 +1,7 @@
 
 const model = require('../model');
 const reason = require('../common/codeReason');
-// const isSuccess = require('../sORf/ifSuccess');
+const md5 = require('../common/util');
 let Users = model.user;
 
 function User(name,password){
@@ -31,6 +31,8 @@ module.exports = {
         }
     },
     register:(name,password)=>{
+        // md5.mdparam(password)
+        // console.log( md5.mdparam(password))
         var usr = new User(name, password);
         return (async () => {
             await Users.create(usr);

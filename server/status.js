@@ -4,7 +4,7 @@
 // const res = require('./common/apiResponse');
 const reason = require('./common/codeReason');
 
-const succ = require('./sORf/ifSuccess');
+// const succ = require('./sORf/ifSuccess');
 
 
 var response_formatter = async (ctx, next) => {
