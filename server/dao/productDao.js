@@ -18,7 +18,7 @@ module.exports = {
                         // ['id', 'ASC']//默认升序
                     ] 
                     });
-            
+
                 code = reason.SUCCESS;
                 return {pets,code};
             })();
@@ -31,7 +31,13 @@ module.exports = {
                         
                     }
                 })
-                return pets;
+                if(pets == ""){
+
+                    code = reason.RECORD_NOT_EXISTS_ERR_CODE
+                }else{
+                    code = reason.SUCCESS;
+                }
+                return {pets,code};
                 })();
             }else if(!name && price){
                 return (async () => {
@@ -41,7 +47,12 @@ module.exports = {
                         
                     }
                 })
-                code = reason.SUCCESS;
+                if(pets == ""){
+
+                    code = reason.RECORD_NOT_EXISTS_ERR_CODE
+                }else{
+                    code = reason.SUCCESS;
+                }
                 return {pets,code};
                 })();
             }else if(name && price){
@@ -58,7 +69,12 @@ module.exports = {
                         ]
                     }
                 })
-                code = reason.SUCCESS;
+               if(pets == ""){
+
+                    code = reason.RECORD_NOT_EXISTS_ERR_CODE
+                }else{
+                    code = reason.SUCCESS;
+                }
                 return {pets,code};
                 })();
             }
@@ -74,28 +90,40 @@ module.exports = {
 
     createProduct: (name,price) => {//创建新产品
         let code;
-        var p = new Product(name, price);
-        return (async () => {
-            await Products.create(p);
-            var pets = await Products.findAll({where:{name:name}});
-            if(pets){
+        if(name && price){
+            console.log(1)
+            var p = new Product(name, price);
+            return (async () => {
+                await Products.create(p);
+                var pets = await Products.findAll({where:{name:name}});
+          
                 code = reason.SUCCESS;
-             }else{
-                code = DB_EXCEPTION_ERR_CODE;
-             }
-           
-            return {pets,code};
-        })();
+                return {pets,code};
+            })();
+        }else{
+            return (async () => {
+                var pets = [];
+                code = reason.RECORD_NOT_EXISTS_ERR_CODE;
+                return {pets,code};
+            })();
+        }
+       
     },
     editProduct: (id,name,price) => {//根据id编辑产品
+        let code;
         return (async () => {
             var pets = await Products.findById(id);
-            await pets.update({//直接操作sql
-                name :name,
-                price :price
-
-            })
-            return pets;
+            if(pets == null){
+                pets=[];
+                code = reason.RECORD_NOT_EXISTS_ERR_CODE
+            }else{
+                await pets.update({//直接操作sql
+                    name :name,
+                    price :price
+                })
+                code = reason.SUCCESS;
+            }
+            return {pets,code};
         })();
     },
     deleteProduct: (id) => {//根据id删除产品

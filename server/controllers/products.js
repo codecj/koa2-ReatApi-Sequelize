@@ -15,10 +15,13 @@ module.exports = {
 
         var p = products.editProduct(ctx.query.id,ctx.request.body.name, parseFloat(ctx.request.body.price));
         ctx.rest(await p);
+        ctx.code = ctx.body.code;
+        ctx.body = ctx.body.pets;
     },
     'POST /api/addproducts': async (ctx, next) => {//添加商品提交的接口
         var p = products.createProduct(ctx.request.body.name, parseFloat(ctx.request.body.price));
         ctx.rest(await p);
+        console.log(JSON.stringify(ctx.body))
         ctx.code = ctx.body.code;
         ctx.body = ctx.body.pets;
     },

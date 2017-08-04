@@ -11,7 +11,7 @@
 <body>
     <div style="height:50px;border-bottom:1px solid #ccc">
         头部
-        <input type="text" value="导出Excel" style="border:1px solid #ccc">
+        <!-- <input type="text" value="导出Excel" style="border:1px solid #ccc"> -->
     </div>
 <script>
 $(function(){
@@ -20,7 +20,7 @@ $(function(){
         data(){
             return{
                  products: [],
-                 changeId:Number,
+                 changeId:"",
                  pagram:{
                     name:"",
                     price:""
@@ -68,10 +68,13 @@ $(function(){
                     data: JSON.stringify(product)
                 }).done(function (r) {
                     console.log(r)
-                    r.data.forEach(item=>{
-                        that.products.push(item);
-                    })
-                    that.getProducts();
+                    if(r.data){
+                        r.data.forEach(item=>{
+                            that.products.push(item);
+                        })
+                        that.getProducts();
+                    }
+                  
                     
                 }).fail(function (jqXHR, textStatus) {
                     // alert('Error: ' + jqXHR.status);
