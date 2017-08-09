@@ -10,7 +10,7 @@ function generateId() {
     return uuid.v4();
 }
 
-var sequelize = new Sequelize(config.database, config.username, config.password, {
+var sequelize =exports.sequelize= new Sequelize(config.database, config.username, config.password, {
     host: config.host,
     dialect: 'mysql',
     pool: {
@@ -59,6 +59,8 @@ function defineModel(name, attributes) {
         hooks: {
             beforeValidate: function (obj) {
                 let now = Date.now();
+                console.log(now)
+
                 if (obj.isNewRecord) {
                     console.log('will create entity...' + obj);
                     if (!obj.id) {
@@ -69,8 +71,11 @@ function defineModel(name, attributes) {
                     obj.version = 0;
                 } else {
                     console.log('will update entity...');
+                    console.log(now)
                     obj.updatedAt = now;
                     obj.version++;
+                    console.log(JSON.stringify(obj))
+
                 }
             }
         }
@@ -95,7 +100,7 @@ for (let type of TYPES) {
     exp[type] = Sequelize[type];
 }
 
-exp.ID = ID_TYPE;
-exp.generateId = generateId;
+// exp.ID = ID_TYPE;
+// exp.generateId = generateId;
 
 module.exports = exp;

@@ -1,5 +1,6 @@
 const model = require('../model');
 const reason = require('../common/codeReason');
+const db = require('../db');
 
 let Products = model.products;
 function Product(name, price) {//创建产品
@@ -94,9 +95,8 @@ module.exports = {
             console.log(1)
             var p = new Product(name, price);
             return (async () => {
-                await Products.create(p);
+               var ppp= await Products.create(p);
                 var pets = await Products.findAll({where:{name:name}});
-          
                 code = reason.SUCCESS;
                 return {pets,code};
             })();
@@ -122,10 +122,11 @@ module.exports = {
                     price :price
                 })
                 code = reason.SUCCESS;
-            }
+                }
             return {pets,code};
         })();
     },
+
     deleteProduct: (id) => {//根据id删除产品
         let code;
         return (async () => {
